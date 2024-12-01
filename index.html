@@ -39,57 +39,96 @@
             color: #00adee;
         }
 
-        .video-section, .content-section, .video-content, .image-content {
-            padding: 100px 5%;
+        .video-section {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .video-section video {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .video-section .text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            animation: fadeIn 3s ease-in-out;
+        }
+
+        .video-section .text-overlay h1 {
+            font-size: 3rem;
+            margin: 0;
+        }
+
+        .video-section .text-overlay p {
+            margin-top: 10px;
+            font-size: 1.2rem;
+            opacity: 0;
+            animation: fadeIn 3s ease-in-out 1.5s forwards;
+        }
+
+        .content-section {
+            height: 100vh;
             display: flex;
             align-items: center;
-            justify-content: center;
-            flex-direction: column;
-        }
-
-        .video-section video,
-        .video-content video {
-            width: 100%;
-            height: auto;
-            margin-bottom: 30px;
-        }
-
-        .video-section .text-overlay, .content-section .text-content, .image-content .text-content {
-            text-align: center;
-        }
-
-        .video-section .text-overlay h1,
-        .video-content h1,
-        .image-content h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
-        }
-
-        .video-section .text-overlay p,
-        .video-content p,
-        .image-content p {
-            font-size: 1.2rem;
-            line-height: 1.5;
-        }
-
-        .image-content {
-            flex-direction: row;
             justify-content: space-between;
+            padding: 0 5%;
         }
 
-        .image-content img {
-            max-width: 45%;
+        .content-section .text-content {
+            max-width: 40%;
+            animation: fadeInText 1.5s ease-in-out forwards;
+        }
+
+        .content-section h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .content-section p {
+            line-height: 1.5;
+            font-size: 1rem;
+        }
+
+        .content-section img {
+            max-width: 40%;
             opacity: 0;
-            animation: fadeSlideInFromLeft 1.5s ease-in-out forwards;
-        }
-
-        .image-content .text-content {
-            max-width: 45%;
-            padding-left: 5%;
+            transform: translateX(-50%);
+            animation: fadeSlideIn 1.5s ease-in-out forwards;
         }
 
         /* Animations */
-        @keyframes fadeSlideInFromLeft {
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInText {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeSlideIn {
             from {
                 opacity: 0;
                 transform: translateX(-100%);
@@ -132,9 +171,7 @@
         </div>
         <img src="images/Into the Infinite Skies (1).png" alt="Into the Infinite Skies">
     </section>
-
-    <!-- Nouvelle section : Vidéo Go Further -->
-    <section class="video-content">
+      <section class="video-content">
         <video autoplay loop muted>
             <source src="images/Into the Infinite Skies-vmake (1).mp4" type="video/mp4">
         </video>
