@@ -82,14 +82,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 50px;
-        }
-
-        .content-section img {
-            max-width: 45%;
-            margin-right: 50px; /* Ajustement avec px */
-            opacity: 0;
-            animation: fadeSlideIn 1.5s ease-in-out forwards; /* Animation améliorée */
+            padding: 0 5%;
         }
 
         .content-section .text-content {
@@ -107,6 +100,14 @@
             font-size: 1rem;
         }
 
+        .content-section img {
+            max-width: 40%;
+            opacity: 0;
+            transform: translateX(-50%);
+            animation: fadeSlideIn 1.5s ease-in-out forwards;
+        }
+
+        /* Animations */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -130,7 +131,7 @@
         @keyframes fadeSlideIn {
             from {
                 opacity: 0;
-                transform: translateX(-50%);
+                transform: translateX(-100%);
             }
             to {
                 opacity: 1;
