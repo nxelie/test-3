@@ -81,8 +81,15 @@
             height: 100vh;
             display: flex;
             align-items: center;
+            padding: 50px;
             justify-content: space-between;
-            padding: 0 5%;
+        }
+
+        .content-section img {
+            max-width: 45%;
+            margin-right: 5cm; /* Correction de la marge */
+            opacity: 0;
+            animation: fadeSlideIn 1.5s ease-in-out forwards; /* Animation active */
         }
 
         .content-section .text-content {
@@ -100,14 +107,6 @@
             font-size: 1rem;
         }
 
-        .content-section img {
-            max-width: 40%;
-            opacity: 0;
-            transform: translateX(-50%);
-            animation: fadeSlideIn 1.5s ease-in-out forwards;
-        }
-
-        /* Animations */
         @keyframes fadeIn {
             from {
                 opacity: 0;
@@ -171,6 +170,7 @@
         </div>
         <img src="images/Into the Infinite Skies (1).png" alt="Into the Infinite Skies">
     </section>
+
       <section class="video-content">
         <video autoplay loop muted>
             <source src="images/Into the Infinite Skies-vmake (1).mp4" type="video/mp4">
@@ -180,8 +180,7 @@
             <p>Where Your Journey to the Stars Begins.</p>
         </div>
     </section>
-
-    <!-- Nouvelle section : Image Go Further -->
+    
     <section class="image-content">
         <img src="images/5e676132d684b9.75355458 (1).png" alt="Go Further Image">
         <div class="text-content">
