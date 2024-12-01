@@ -86,8 +86,10 @@
 
         .content-section img {
             max-width: 50%;
+            margin-right: 5cm;
+            opacity: 0;
             transform: translateX(-100%);
-            animation: slideIn 1s ease-in-out forwards;
+            animation: fadeSlideIn 1.5s ease-in-out forwards;
         }
 
         .content-section .text-content {
@@ -126,11 +128,13 @@
             }
         }
 
-        @keyframes slideIn {
+        @keyframes fadeSlideIn {
             from {
+                opacity: 0;
                 transform: translateX(-100%);
             }
             to {
+                opacity: 1;
                 transform: translateX(0);
             }
         }
@@ -169,4 +173,3 @@
     </section>
 </body>
 </html>
-
