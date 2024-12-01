@@ -82,19 +82,18 @@
             display: flex;
             align-items: center;
             padding: 50px;
+            justify-content: space-between;
         }
 
         .content-section img {
-            max-width: 50%;
-            margin-right: 5cm;
+            max-width: 45%;
+            margin-right: 5cm; /* Correction de la marge */
             opacity: 0;
-            transform: translateX(-100%);
-            animation: fadeSlideIn 1.5s ease-in-out forwards;
+            animation: fadeSlideIn 1.5s ease-in-out forwards; /* Animation active */
         }
 
         .content-section .text-content {
             max-width: 40%;
-            margin-right: 30px;
             animation: fadeInText 1.5s ease-in-out forwards;
         }
 
