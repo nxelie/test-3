@@ -91,10 +91,16 @@
             max-width: 40%;
             margin-right: 5%;
             opacity: 0;
-            animation: fadeSlideInFromRight 1.5s ease-in-out forwards;
+            transform: translateX(100%);
+            transition: opacity 1.5s ease, transform 1.5s ease;
         }
 
-        .video-content, .image-content {
+        .content-section img.animate {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .video-content {
             padding: 100px 5%;
             text-align: center;
         }
@@ -109,12 +115,19 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 100px 5%;
         }
 
         .image-content img {
             max-width: 40%;
             opacity: 0;
-            animation: fadeSlideInFromLeft 1.5s ease-in-out forwards;
+            transform: translateX(-100%);
+            transition: opacity 1.5s ease, transform 1.5s ease;
+        }
+
+        .image-content img.animate {
+            opacity: 1;
+            transform: translateX(0);
         }
 
         .image-content .text-content {
@@ -141,65 +154,6 @@
             to {
                 opacity: 1;
             }
-        }
-
-        @keyframes fadeSlideInFromRight {
-            from {
-                opacity: 0;
-                transform: translateX(100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        @keyframes fadeSlideInFromLeft {
-            from {
-                opacity: 0;
-                transform: translateX(-100%);
-            }
-            to {
-                opacity: 1;
-                transform: translateX(0);
-            }
-        }
-
-        /* Nouvelle animation et position pour "GO FURTHER" */
-        .video-container {
-            position: relative;
-            width: 100%;
-            height: auto;
-            overflow: hidden;
-        }
-
-        .video-container video {
-            width: 100%;
-            height: auto;
-        }
-
-        .text-overlay-left {
-            position: absolute;
-            top: 50%;
-            left: 5%;
-            transform: translateY(-50%);
-            color: white;
-            text-align: left;
-            z-index: 2;
-            font-family: 'Roboto', sans-serif;
-        }
-
-        .text-overlay-left h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
-            font-weight: 700;
-        }
-
-        .text-overlay-left p {
-            font-size: 1.5rem;
-            margin-top: 5px;
-            line-height: 1.5;
-            font-weight: 400;
         }
     </style>
 </head>
@@ -228,35 +182,59 @@
         </div>
     </section>
 
-    <!-- Nouvelle section texte et image -->
+    <!-- Section texte et image -->
     <section class="content-section">
         <div class="text-content">
             <h2>INFINITE SKIES</h2>
             <p>Infinite Skies is an immersive space exploration game blending stunning visuals, VR/AR technology, and emotional storytelling. Players navigate galaxies, solve mysteries, and forge connections, reflecting on humanity's place in the cosmos.</p>
         </div>
-        <img src="images/Into the Infinite Skies (1).png" alt="Into the Infinite Skies">
+        <img class="animate-on-scroll" src="images/Into the Infinite Skies (1).png" alt="Into the Infinite Skies">
     </section>
 
     <!-- Section vidéo Go Further -->
     <section class="video-content">
-        <div class="video-container">
-            <video autoplay loop muted>
-                <source src="images/Into the Infinite Skies-vmake.mp4" type="video/mp4">
-            </video>
-            <div class="text-overlay-left">
-                <h1>GO FURTHER</h1>
-                <p>Where Your Journey to the Stars Begins.</p>
-            </div>
+        <video autoplay loop muted>
+            <source src="images/Into the Infinite Skies-vmake (1).mp4" type="video/mp4">
+        </video>
+        <div class="text-overlay">
+            <h1>GO FURTHER</h1>
+            <p>Where Your Journey to the Stars Begins.</p>
         </div>
     </section>
 
     <!-- Section image Go Further -->
     <section class="image-content">
-        <img src="images/5e676132d684b9.75355458 (1).png" alt="Go Further Image">
+        <img class="animate-on-scroll" src="images/5e676132d684b9.75355458 (1).png" alt="Go Further Image">
         <div class="text-content">
             <h1>GO FURTHER</h1>
             <p>Infinite Skies is a cutting-edge immersive experience that blends VR, AR, and 4DX effects to simulate space exploration. From liftoff to interstellar missions, participants engage in interactive adventures that educate and inspire, making the dream of space travel accessible and unforgettable.</p>
         </div>
     </section>
+
+    <!-- Script pour les animations au scroll -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.2
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("animate");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+            const imagesToAnimate = document.querySelectorAll(".animate-on-scroll");
+            imagesToAnimate.forEach(image => observer.observe(image));
+        });
+    </script>
 </body>
 </html>
+
