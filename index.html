@@ -61,6 +61,7 @@
             text-align: center;
             z-index: 2;
             animation: fadeIn 2s ease-in-out;
+            padding-left: 5%;
         }
 
         .video-section .text-overlay h1 {
@@ -101,6 +102,7 @@
         }
 
         .video-content {
+            position: relative;
             padding: 100px 5%;
             text-align: center;
         }
@@ -109,6 +111,26 @@
             width: 100%;
             height: auto;
             margin-bottom: 30px;
+        }
+
+        .video-content .text-overlay {
+            position: absolute;
+            top: 50%;
+            left: 5%;
+            transform: translateY(-50%);
+            z-index: 2;
+            color: white;
+            text-align: left;
+        }
+
+        .video-content h1 {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .video-content p {
+            font-size: 1.5rem;
+            line-height: 1.5;
         }
 
         .image-content {
@@ -217,7 +239,7 @@
             const observerOptions = {
                 root: null,
                 rootMargin: "0px",
-                threshold: 0.2
+                threshold: 0.05 // Déclenche à 5% de visibilité
             };
 
             const observerCallback = (entries, observer) => {
@@ -237,4 +259,3 @@
     </script>
 </body>
 </html>
-
