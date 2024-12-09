@@ -219,7 +219,7 @@
 
         // Mouse scroll event listener
         window.addEventListener('wheel', (event) => {
-            scrollY += event.deltaY * 0.01;
+            scrollY -= event.deltaY * 0.01;
             camera.position.y = scrollY;
         });
     </script>
