@@ -171,7 +171,7 @@
             scene.add(light);
 
             for (let i = 0; i < 2000; i++) {
-                const starGeometry = new THREE.SphereGeometry(Math.random() * 1.5 + 0.5, 16, 16);
+                const starGeometry = new THREE.SphereGeometry(Math.random() * 1.5 + 0.5, 8, 8);
                 const star = new THREE.Mesh(starGeometry, starMaterial);
                 star.position.set(
                     (Math.random() - 0.5) * 2000,
