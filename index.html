@@ -114,10 +114,9 @@
 
         canvas {
             position: absolute;
-            display: flex;
-            height: 2000px;
             top: 0;
             left: 0;
+
             z-index: -1;
         }
     </style>
@@ -136,7 +135,7 @@
         </nav>
     </header>
 
-    
+    <canvas id="spaceBackground"></canvas>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
@@ -150,7 +149,7 @@
         let scene, camera, renderer, composer, stars = [];
         let scrollY = 0;
 
-        function init() {
+        document.addEventListener("DOMContentLoaded", () => {
             const canvas = document.getElementById('spaceBackground');
             renderer = new THREE.WebGLRenderer({ canvas: canvas });
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -193,7 +192,7 @@
             composer.addPass(bloomPass);
 
             animate();
-        }
+        });
 
         function animate() {
             requestAnimationFrame(animate);
@@ -208,8 +207,6 @@
 
             composer.render();
         }
-
-        init();
 
         window.addEventListener('resize', () => {
             camera.aspect = window.innerWidth / window.innerHeight;
@@ -234,7 +231,7 @@
             <p>INTO THE INFINITE SKIES, WHERE EXPLORATION KNOWS NO BOUND</p>
         </div>
     </section>
-<canvas id="spaceBackground"></canvas>
+
     <!-- Section texte et image -->
     <section class="content-section">
         <div class="text-content">
