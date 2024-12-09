@@ -6,34 +6,119 @@
     <title>Infinite Skies</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        /* Optimized CSS */
-        body { margin: 0; font-family: 'Roboto', sans-serif; color: white; background-color: black; overflow-x: hidden; }
-        header { position: fixed; top: 0; width: 100%; background-color: black; z-index: 10; display: flex; justify-content: center; padding: 15px 0; }
-        header nav a { margin: 0 15px; text-decoration: none; color: white; font-size: 14px; text-transform: uppercase; font-weight: 700; transition: color 0.3s; }
+        body { 
+            margin: 0; 
+            font-family: 'Roboto', sans-serif; 
+            color: white; 
+            background-color: black; 
+            overflow-x: hidden; 
+        }
+        header { 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            background-color: black; 
+            z-index: 10; 
+            display: flex; 
+            justify-content: center; 
+            padding: 15px 0; 
+        }
+        header nav a { 
+            margin: 0 15px; 
+            text-decoration: none; 
+            color: white; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            font-weight: 700; 
+            transition: color 0.3s; 
+        }
         header nav a:hover { color: #00adee; }
-        .video-section { position: relative; height: 100vh; display: flex; align-items: center; justify-content: center; }
-        .video-section video { position: absolute; top: 0; left: 0; width: 100%; height: 100%; object-fit: cover; }
-        .video-section .text-overlay { position: relative; text-align: center; z-index: 2; animation: fadeIn 2s ease-in-out; padding-left: 5%; }
+        .video-section { 
+            position: relative; 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .video-section video { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+        .video-section .text-overlay { 
+            position: relative; 
+            text-align: center; 
+            z-index: 2; 
+            animation: fadeIn 2s ease-in-out; 
+            padding-left: 5%; 
+        }
         .video-section .text-overlay h1 { font-size: 4rem; margin-bottom: 15px; }
-        .video-section .text-overlay p { font-size: 1.5rem; margin-top: 10px; animation: fadeIn 2s ease-in-out 1s forwards; opacity: 0; }
-        .content-section { display: flex; align-items: center; justify-content: space-between; padding: 100px 5%; }
+        .video-section .text-overlay p { 
+            font-size: 1.5rem; 
+            margin-top: 10px; 
+            animation: fadeIn 2s ease-in-out 1s forwards; 
+            opacity: 0; 
+        }
+        .content-section { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 100px 5%; 
+        }
         .content-section .text-content { max-width: 50%; text-align: left; }
-        .content-section img { max-width: 40%; margin-right: 5%; opacity: 0; transform: translateX(100%); transition: opacity 1.5s ease, transform 1.5s ease; }
+        .content-section img { 
+            max-width: 40%; 
+            margin-right: 5%; 
+            opacity: 0; 
+            transform: translateX(100%); 
+            transition: opacity 1.5s ease, transform 1.5s ease; 
+        }
         .content-section img.animate { opacity: 1; transform: translateX(0); }
-        .video-content { position: relative; padding: 100px 5%; text-align: center; }
+        .video-content { 
+            position: relative; 
+            padding: 100px 5%; 
+            text-align: center; 
+        }
         .video-content video { width: 100%; height: auto; margin-bottom: 30px; }
-        .video-content .text-overlay { position: absolute; top: 50%; left: 5%; transform: translateY(-50%); z-index: 2; color: white; text-align: left; }
+        .video-content .text-overlay { 
+            position: absolute; 
+            top: 50%; 
+            left: 5%; 
+            transform: translateY(-50%); 
+            z-index: 2; 
+            color: white; 
+            text-align: left; 
+        }
         .video-content h1 { font-size: 3rem; margin-bottom: 15px; }
         .video-content p { font-size: 1.5rem; line-height: 1.5; }
-        .image-content { display: flex; align-items: center; justify-content: space-between; padding: 100px 5%; }
-        .image-content img { max-width: 40%; opacity: 0; transform: translateX(-100%); transition: opacity 1.5s ease, transform 1.5s ease; }
+        .image-content { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 100px 5%; 
+        }
+        .image-content img { 
+            max-width: 40%; 
+            opacity: 0; 
+            transform: translateX(-100%); 
+            transition: opacity 1.5s ease, transform 1.5s ease; 
+        }
         .image-content img.animate { opacity: 1; transform: translateX(0); }
         .image-content .text-content { max-width: 50%; text-align: left; padding-left: 5%; }
         .image-content h1, .video-content h1 { font-size: 2.5rem; margin-bottom: 15px; }
         .image-content p, .video-content p { font-size: 1.2rem; line-height: 1.5; }
         @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
     </style>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
 </head>
 <body>
     <header>
@@ -49,52 +134,95 @@
         </nav>
     </header>
 
-    <!-- Three.js Stars Background -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r150/three.min.js"></script>
+    <canvas id="spaceBackground"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
     <script>
-        const scene = new THREE.Scene();
-        const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        const renderer = new THREE.WebGLRenderer();
-        renderer.setSize(window.innerWidth, window.innerHeight);
-        document.body.appendChild(renderer.domElement);
+        // Three.js Space Background Script
+        let scene, camera, renderer, composer, stars = [];
+        let scrollY = 0;
 
-        const geometry = new THREE.SphereGeometry(500, 64, 64);
-        const material = new THREE.MeshBasicMaterial({
-            color: 0xffffff,
-            side: THREE.BackSide
-        });
-        const stars = new THREE.Mesh(geometry, material);
-        scene.add(stars);
+        function init() {
+            const canvas = document.getElementById('spaceBackground');
+            renderer = new THREE.WebGLRenderer({ canvas: canvas });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
 
-        const starCount = 1000;
-        for (let i = 0; i < starCount; i++) {
-            const starGeometry = new THREE.SphereGeometry(0.5, 2, 2);
-            const starMaterial = new THREE.MeshBasicMaterial({ color: 0xffffff });
-            const star = new THREE.Mesh(starGeometry, starMaterial);
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            camera.position.z = 400;
 
-            const x = (Math.random() - 0.5) * 1000;
-            const y = (Math.random() - 0.5) * 1000;
-            const z = (Math.random() - 0.5) * 1000;
-            star.position.set(x, y, z);
-            scene.add(star);
+            const starMaterial = new THREE.MeshStandardMaterial({
+                color: 0xffffff,
+                emissive: 0xffffff,
+                emissiveIntensity: 0.5
+            });
+
+            const light = new THREE.AmbientLight(0xffffff, 1);
+            scene.add(light);
+
+            for (let i = 0; i < 2000; i++) {
+                const starGeometry = new THREE.SphereGeometry(Math.random() * 1.5 + 0.5, 16, 16);
+                const star = new THREE.Mesh(starGeometry, starMaterial);
+                star.position.set(
+                    (Math.random() - 0.5) * 2000,
+                    (Math.random() - 0.5) * 2000,
+                    (Math.random() - 0.5) * 2000
+                );
+                scene.add(star);
+                stars.push(star);
+            }
+
+            // Bloom effect
+            const renderScene = new THREE.RenderPass(scene, camera);
+            const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+            bloomPass.threshold = 0;
+            bloomPass.strength = 1.5;
+            bloomPass.radius = 0;
+
+            composer = new THREE.EffectComposer(renderer);
+            composer.addPass(renderScene);
+            composer.addPass(bloomPass);
+
+            animate();
         }
-
-        camera.position.z = 50;
 
         function animate() {
             requestAnimationFrame(animate);
-            stars.rotation.y += 0.001;
-            renderer.render(scene, camera);
-        }
-        animate();
 
-        // Invert scroll direction
-        window.addEventListener('scroll', function(event) {
-            stars.rotation.y -= event.deltaY * 0.0002;
+            stars.forEach(star => {
+                star.rotation.x += 0.001;
+                star.rotation.y += 0.001;
+            });
+
+            scene.rotation.x += 0.0001;
+            scene.rotation.y += 0.0001;
+
+            composer.render();
+        }
+
+        init();
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            composer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Mouse scroll event listener
+        window.addEventListener('wheel', (event) => {
+            scrollY += event.deltaY * 0.01;
+            camera.position.y = scrollY;
         });
     </script>
 
-    <!-- Section vidéo principale -->
     <section class="video-section">
         <video autoplay loop muted>
             <source src="images/314844502744625152 (1).mp4" type="video/mp4">
