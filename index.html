@@ -146,113 +146,127 @@
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
-    <script>
-        // Three.js Space Background Script
-        let scene, camera, renderer, composer, stars = [];
-        let canvasVisible = false; // Variable to track visibility state of the canvas
-        let scrollY = 0;
+<script>
+    // Three.js Space Background Script
+    let scene, camera, renderer, composer, stars = [];
+    let canvasVisible = false; // Variable to track visibility state of the canvas
+    let scrollY = 0;
 
-        document.addEventListener("DOMContentLoaded", () => {
-            const canvas = document.getElementById('spaceBackground');
-            renderer = new THREE.WebGLRenderer({ canvas: canvas });
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            renderer.setPixelRatio(window.devicePixelRatio);
+    document.addEventListener("DOMContentLoaded", () => {
+        const canvas = document.getElementById('spaceBackground');
+        renderer = new THREE.WebGLRenderer({ canvas: canvas });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
 
-            scene = new THREE.Scene();
-            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-            camera.position.z = 400;
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 400;
 
-            const starMaterial = new THREE.MeshStandardMaterial({
-                color: 0xffffff,
-                emissive: 0xffffff,
-                emissiveIntensity: 0.5
-            });
-
-            const light = new THREE.AmbientLight(0xffffff, 1);
-            scene.add(light);
-
-            for (let i = 0; i < 1800; i++) {
-                const starGeometry = new THREE.SphereGeometry(Math.random() * 1.5 + 0.5, 16, 16);
-                const star = new THREE.Mesh(starGeometry, starMaterial);
-                star.position.set(
-                    (Math.random() - 0.5) * 2000,
-                    (Math.random() - 0.5) * 2000,
-                    (Math.random() - 0.5) * 2000
-                );
-                scene.add(star);
-                stars.push(star);
-            }
-
-            const colors = [0xbbad17, 0xb92a04, 0x6da9ab]; // light yellow, deep red, soft blue
-            for (let i = 0; i < 200; i++) {
-                const color = colors[Math.floor(Math.random() * colors.length)];
-                const opacity = Math.random() * 0.6 + 0.1; // Random opacity between 0.1 and 0.7
-                const colorfulStarMaterial = new THREE.MeshStandardMaterial({
-                    color: color,
-                    emissive: color,
-                    emissiveIntensity: opacity
-                });
-                const colorfulStarGeometry = new THREE.SphereGeometry(Math.random() * 2 + 1, 16, 16);
-                const colorfulStar = new THREE.Mesh(colorfulStarGeometry, colorfulStarMaterial);
-                colorfulStar.position.set(
-                    (Math.random() - 0.5) * 2000,
-                    (Math.random() - 0.5) * 2000,
-                    (Math.random() - 0.5) * 2000
-                );
-                scene.add(colorfulStar);
-                stars.push(colorfulStar);
-            }
-
-            // Bloom effect
-            const renderScene = new THREE.RenderPass(scene, camera);
-            const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
-            bloomPass.threshold = 0;
-            bloomPass.strength = 1.5;
-            bloomPass.radius = 0;
-
-            composer = new THREE.EffectComposer(renderer);
-            composer.addPass(renderScene);
-            composer.addPass(bloomPass);
-
-            animate();
+        const starMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            emissive: 0xffffff,
+            emissiveIntensity: 0.5
         });
 
-        function animate() {
-            requestAnimationFrame(animate);
+        const light = new THREE.AmbientLight(0xffffff, 1);
+        scene.add(light);
 
-            stars.forEach(star => {
-                star.rotation.x += 0.001;
-                star.rotation.y += 0.001;
-            });
-
-            scene.rotation.x += 0.0001;
-            scene.rotation.y += 0.0001;
-
-            composer.render();
+        for (let i = 0; i < 1800; i++) {
+            const starGeometry = new THREE.SphereGeometry(Math.random() * 1.5 + 0.5, 16, 16);
+            const star = new THREE.Mesh(starGeometry, starMaterial);
+            star.position.set(
+                (Math.random() - 0.5) * 2000,
+                (Math.random() - 0.5) * 2000,
+                (Math.random() - 0.5) * 2000
+            );
+            scene.add(star);
+            stars.push(star);
         }
 
-        window.addEventListener('resize', () => {
-            camera.aspect = window.innerWidth / window.innerHeight;
-            camera.updateProjectionMatrix();
-            renderer.setSize(window.innerWidth, window.innerHeight);
-            composer.setSize(window.innerWidth, window.innerHeight);
+        const colors = [0xbbad17, 0xb92a04, 0x6da9ab]; // light yellow, deep red, soft blue
+        for (let i = 0; i < 200; i++) {
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const opacity = Math.random() * 0.6 + 0.1; // Random opacity between 0.1 and 0.7
+            const colorfulStarMaterial = new THREE.MeshStandardMaterial({
+                color: color,
+                emissive: color,
+                emissiveIntensity: opacity
+            });
+            const colorfulStarGeometry = new THREE.SphereGeometry(Math.random() * 2 + 1, 16, 16);
+            const colorfulStar = new THREE.Mesh(colorfulStarGeometry, colorfulStarMaterial);
+            colorfulStar.position.set(
+                (Math.random() - 0.5) * 2000,
+                (Math.random() - 0.5) * 2000,
+                (Math.random() - 0.5) * 2000
+            );
+            scene.add(colorfulStar);
+            stars.push(colorfulStar);
+        }
+
+        // Bloom effect
+        const renderScene = new THREE.RenderPass(scene, camera);
+        const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0;
+        bloomPass.strength = 1.5;
+        bloomPass.radius = 0;
+
+        composer = new THREE.EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+
+        animate();
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        stars.forEach(star => {
+            star.rotation.x += 0.001;
+            star.rotation.y += 0.001;
         });
 
-        // Mouse scroll event listener
-        window.addEventListener('wheel', (event) => {
-            scrollY += event.deltaY * 0.01;
-            camera.position.y = scrollY;
-        });
+        scene.rotation.x += 0.0001;
+        scene.rotation.y += 0.0001;
 
-         // Toggle canvas visibility on 's' key press
-        window.addEventListener('keydown', (event) => {
-            if (event.key === 's' || event.key === 'S') {
-                const canvas = document.getElementById('spaceBackground');
-                canvasVisible = !canvasVisible;
-                canvas.style.display = canvasVisible ? 'block' : 'none';
+        composer.render();
+    }
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        composer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Mouse scroll event listener
+    window.addEventListener('wheel', (event) => {
+        scrollY += event.deltaY * 0.01;
+        camera.position.y = scrollY;
+    });
+
+    // Toggle canvas visibility with fade effect
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 's' || event.key === 'S') {
+            const canvas = document.getElementById('spaceBackground');
+            if (canvasVisible) {
+                canvas.style.transition = 'opacity 1s ease-in-out';
+                canvas.style.opacity = '0';
+                setTimeout(() => {
+                    canvas.style.display = 'none';
+                    canvasVisible = false;
+                }, 1000);
+            } else {
+                canvas.style.display = 'block';
+                setTimeout(() => {
+                    canvas.style.transition = 'opacity 1s ease-in-out';
+                    canvas.style.opacity = '1';
+                }, 10); // Small delay to ensure display change is applied before transition
+                canvasVisible = true;
             }
-        });
-    </script>
+        }
+    });
+</script>
+
 
     <section class="video-section">
         <video autoplay loop muted>
