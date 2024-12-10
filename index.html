@@ -242,6 +242,15 @@
             scrollY += event.deltaY * 0.01;
             camera.position.y = scrollY;
         });
+
+         // Toggle canvas visibility on 's' key press
+        window.addEventListener('keydown', (event) => {
+            if (event.key === 's' || event.key === 'S') {
+                const canvas = document.getElementById('spaceBackground');
+                canvasVisible = !canvasVisible;
+                canvas.style.display = canvasVisible ? 'block' : 'none';
+            }
+        });
     </script>
 
     <section class="video-section">
