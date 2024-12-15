@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Infinite Skies</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body { 
+            margin: 0; 
+            font-family: 'Roboto', sans-serif; 
+            color: white; 
+            background-color: black; 
+            overflow-x: hidden; 
+        }
+        header { 
+            position: fixed; 
+            top: 0; 
+            width: 100%; 
+            background-color: black; 
+            z-index: 10; 
+            display: flex; 
+            justify-content: center; 
+            padding: 15px 0; 
+        }
+        header nav a { 
+            margin: 0 15px; 
+            text-decoration: none; 
+            color: white; 
+            font-size: 14px; 
+            text-transform: uppercase; 
+            font-weight: 700; 
+            transition: color 0.3s; 
+        }
+        header nav a:hover { color: #00adee; }
+        .video-section { 
+            position: relative; 
+            height: 100vh; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+        }
+        .video-section video { 
+            position: absolute; 
+            top: 0; 
+            left: 0; 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            z-index: 1;
+        }
+        .video-section .text-overlay { 
+            position: relative; 
+            text-align: center; 
+            z-index: 2; 
+            animation: fadeIn 2s ease-in-out; 
+            padding-left: 5%; 
+        }
+        .video-section .text-overlay h1 { font-size: 4rem; margin-bottom: 15px; }
+        .video-section .text-overlay p { 
+            font-size: 1.5rem; 
+            margin-top: 10px; 
+            animation: fadeIn 2s ease-in-out 1s forwards; 
+            opacity: 0; 
+        }
+        .content-section { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 100px 5%; 
+        }
+        .content-section .text-content { max-width: 50%; text-align: left; }
+        .content-section img { 
+            max-width: 40%; 
+            margin-right: 5%; 
+            opacity: 0; 
+            transform: translateX(100%); 
+            transition: opacity 1.5s ease, transform 1.5s ease; 
+        }
+        .content-section img.animate { opacity: 1; transform: translateX(0); }
+        .video-content { 
+            position: relative; 
+            padding: 100px 5%; 
+            text-align: center; 
+        }
+        .video-content video {left:0px; width: 100%; height: auto; margin-bottom: 30px; }
+        .video-content .text-overlay { 
+            position: absolute; 
+            top: 50%; 
+            left: 5%; 
+            transform: translateY(-50%); 
+            z-index: 2; 
+            color: white; 
+            text-align: left; 
+        }
+        .video-content h1 { font-size: 3rem; margin-bottom: 15px; }
+        .video-content p { font-size: 1.5rem; line-height: 1.5; }
+        .image-content { 
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between; 
+            padding: 100px 5%; 
+        }
+        .image-content img { 
+            max-width: 40%; 
+            opacity: 0; 
+            transform: translateX(-100%); 
+            transition: opacity 1.5s ease, transform 1.5s ease; 
+        }
+        .image-content img.animate { opacity: 1; transform: translateX(0); }
+        .image-content .text-content { max-width: 50%; text-align: left; padding-left: 5%; }
+        .image-content h1, .video-content h1 { font-size: 2.5rem; margin-bottom: 15px; }
+        .image-content p, .video-content p { font-size: 1.2rem; line-height: 1.5; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <a href="#infinite-skies">INFINITE SKIES</a>
+            <a href="#falcon-heavy">FALCON HEAVY</a>
+            <a href="#dragon">DRAGON</a>
+            <a href="#starship">STARSHIP</a>
+            <a href="#human-spaceflight">HUMAN SPACEFLIGHT</a>
+            <a href="#rideshare">RIDESHARE</a>
+            <a href="#starshield">STARSHIELD</a>
+            <a href="#starlink">STARLINK</a>
+        </nav>
+    </header>
+
+    <canvas id="spaceBackground"></canvas>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/UnrealBloomPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/LuminosityHighPassShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/shaders/CopyShader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+<script>
+    // Three.js Space Background Script
+    let scene, camera, renderer, composer, stars = [];
+    let canvasVisible = false; // Variable to track visibility state of the canvas
+    let scrollY = 0;
+
+    document.addEventListener("DOMContentLoaded", () => {
+        const canvas = document.getElementById('spaceBackground');
+        renderer = new THREE.WebGLRenderer({ canvas: canvas });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        scene = new THREE.Scene();
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 400;
+
+        const starMaterial = new THREE.MeshStandardMaterial({
+            color: 0xffffff,
+            emissive: 0xffffff,
+            emissiveIntensity: 0.5
+        });
+
+        const light = new THREE.AmbientLight(0xffffff, 1);
+        scene.add(light);
+
+        for (let i = 0; i < 1800; i++) {
+            const starGeometry = new THREE.SphereGeometry(Math.random() * 1.5 + 0.5, 16, 16);
+            const star = new THREE.Mesh(starGeometry, starMaterial);
+            star.position.set(
+                (Math.random() - 0.5) * 2000,
+                (Math.random() - 0.5) * 2000,
+                (Math.random() - 0.5) * 2000
+            );
+            scene.add(star);
+            stars.push(star);
+        }
+
+        const colors = [0xbbad17, 0xb92a04, 0x6da9ab]; // light yellow, deep red, soft blue
+        for (let i = 0; i < 200; i++) {
+            const color = colors[Math.floor(Math.random() * colors.length)];
+            const opacity = Math.random() * 0.6 + 0.1; // Random opacity between 0.1 and 0.7
+            const colorfulStarMaterial = new THREE.MeshStandardMaterial({
+                color: color,
+                emissive: color,
+                emissiveIntensity: opacity
+            });
+            const colorfulStarGeometry = new THREE.SphereGeometry(Math.random() * 2 + 1, 16, 16);
+            const colorfulStar = new THREE.Mesh(colorfulStarGeometry, colorfulStarMaterial);
+            colorfulStar.position.set(
+                (Math.random() - 0.5) * 2000,
+                (Math.random() - 0.5) * 2000,
+                (Math.random() - 0.5) * 2000
+            );
+            scene.add(colorfulStar);
+            stars.push(colorfulStar);
+        }
+
+        // Bloom effect
+        const renderScene = new THREE.RenderPass(scene, camera);
+        const bloomPass = new THREE.UnrealBloomPass(new THREE.Vector2(window.innerWidth, window.innerHeight), 1.5, 0.4, 0.85);
+        bloomPass.threshold = 0;
+        bloomPass.strength = 1.5;
+        bloomPass.radius = 0;
+
+        composer = new THREE.EffectComposer(renderer);
+        composer.addPass(renderScene);
+        composer.addPass(bloomPass);
+
+        animate();
+    });
+
+    function animate() {
+        requestAnimationFrame(animate);
+
+        stars.forEach(star => {
+            star.rotation.x += 0.001;
+            star.rotation.y += 0.001;
+        });
+
+        scene.rotation.x += 0.0001;
+        scene.rotation.y += 0.0001;
+
+        composer.render();
+    }
+
+    window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        composer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Mouse scroll event listener
+    window.addEventListener('wheel', (event) => {
+        scrollY += event.deltaY * 0.01;
+        camera.position.y = scrollY;
+    });
+
+    // Toggle canvas visibility with fade effect
+    window.addEventListener('keydown', (event) => {
+        if (event.key === 's' || event.key === 'S') {
+            const canvas = document.getElementById('spaceBackground');
+            if (canvasVisible) {
+                canvas.style.transition = 'opacity 1s ease-in-out';
+                canvas.style.opacity = '0';
+                setTimeout(() => {
+                    canvas.style.display = 'none';
+                    canvasVisible = false;
+                }, 1000);
+            } else {
+                canvas.style.display = 'block';
+                setTimeout(() => {
+                    canvas.style.transition = 'opacity 1s ease-in-out';
+                    canvas.style.opacity = '1';
+                }, 10); // Small delay to ensure display change is applied before transition
+                canvasVisible = true;
+            }
+        }
+    });
+</script>
+
+
+    <section class="video-section">
+        <video autoplay loop muted>
+            <source src="images/314844502744625152 (1).mp4" type="video/mp4">
+        </video>
+        <div class="text-overlay">
+            <h1>INFINITE SKIES</h1>
+            <p>INTO THE INFINITE SKIES, WHERE EXPLORATION KNOWS NO BOUND</p>
+        </div>
+    </section>
+
+    <!-- Section texte et image -->
+    <section class="content-section">
+        <div class="text-content">
+            <h2>INFINITE SKIES</h2>
+            <p>Infinite Skies is an immersive space exploration game blending stunning visuals, VR/AR technology, and emotional storytelling. Players navigate galaxies, solve mysteries, and forge connections, reflecting on humanity's place in the cosmos.</p>
+        </div>
+        <img class="animate-on-scroll" src="images/Into the Infinite Skies (1).png" alt="Into the Infinite Skies">
+    </section>
+
+    <!-- Section vidéo Go Further -->
+    <section class="video-content">
+        <video autoplay loop muted>
+            <source src="images/IntotheInfiniteSkies.mp4" type="video/mp4">
+        </video>
+        <div class="text-overlay">
+            <h1>GO FURTHER</h1>
+            <p>Where Your Journey to the Stars Begins.</p>
+        </div>
+    </section>
+
+    <!-- Section image Go Further -->
+    <section class="image-content">
+        <img class="animate-on-scroll" src="images/5e676132d684b9.75355458 (1).png" alt="Go Further Image">
+        <div class="text-content">
+            <h1>GO FURTHER</h1>
+            <p>Infinite Skies is a cutting-edge immersive experience that blends VR, AR, and 4DX effects to simulate space exploration. From liftoff to interstellar missions, participants engage in interactive adventures that educate and inspire, making the dream of space travel accessible and unforgettable.</p>
+        </div>
+    </section>
+
+    <!-- Script pour les animations au scroll -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const observerOptions = {
+                root: null,
+                rootMargin: "0px",
+                threshold: 0.05 // Déclenche à 5% de visibilité
+            };
+
+            const observerCallback = (entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("animate");
+                        observer.unobserve(entry.target);
+                    }
+                });
+            };
+
+            const observer = new IntersectionObserver(observerCallback, observerOptions);
+
+            const imagesToAnimate = document.querySelectorAll(".animate-on-scroll");
+            imagesToAnimate.forEach(image => observer.observe(image));
+        });
+   </div>
+    <script>
+
+<section>
+  <!-- Centered SHOP text -->
+  <p class="description">SHOP</p>
+
+  <!-- Gallery of images -->
+  <div class="rocket-gallery">
+    <img src="images/unnamed (2) (1).jpg" alt="Rocket Image 1">
+    <img src="images/bb.jpg" alt="Rocket Image 2">
+    <img src="images/LD0005309557_2 (1) (1).jpg" alt="Rocket Image 3">
+  </div>
+</section>
+
+
+
+
+  <section>
+
+  <footer id="contact" class="footer">
+    <h2>Contact Us</h2>
+    <p>Email: contact@infiniteskies.com</p>
+  </footer>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('SpaceX Inspired Website Loaded');
+    });
+  </script>
+  </section>
+</body>
+</html>
